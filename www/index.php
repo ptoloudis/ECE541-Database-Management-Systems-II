@@ -1,8 +1,9 @@
 <?php
-// index.php
 session_start();
 include 'db.php';
 include 'auth.php';
+
+$error = ''; 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
@@ -12,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: dashboard.php");
         exit();
     } else {
-        echo "Invalid credentials!";
+        $error = "Invalid email or password!";
     }
 }
 ?>
@@ -23,10 +24,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <form method="post">
-        Email: <input type="email" name="email"><br>
-        Password: <input type="password" name="password"><br>
-        <input type="submit" value="Login">
-    </form>
+    <div class="form-container">
+        <form method="post">
+            <div class="error">
+                <?php echo $error; ?>
+            </div>
+            Email: <input type="email" name="email"><br>
+            Password: <input type="password" name="password"><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
 </body>
 </html>

@@ -1,8 +1,8 @@
 <?php
-$host = 'db';  // Adjust as needed
-$user = 'user';  // Your database username
-$password = 'password';  // Your database password
-$dbname = 'library';  // Your database name
+$host = 'db';  
+$user = 'user';
+$password = 'password';
+$dbname = 'library';  
 
 $conn = new mysqli($host, $user, $password, $dbname);
 

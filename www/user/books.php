@@ -1,7 +1,7 @@
 <?php
 // User-only access verification
 session_start();
-if ($_SESSION['user_type'] != 'user') {
+if ($_SESSION['admin'] != '0' && $_SESSION['admin'] != '1') {
     header("Location: ../index.php");
     exit();
 }
