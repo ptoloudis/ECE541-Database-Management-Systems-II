@@ -1,7 +1,7 @@
 <?php
-include 'db.php';
+include '../db.php';
 
-$query = "SELECT * FROM user";
+$query = "SELECT * FROM User";
 $result = $conn->query($query);
 
 if (!$result) {
@@ -34,7 +34,7 @@ if (!$result) {
                     <td><?php echo htmlspecialchars($row['surname']); ?></td>
                     <td><?php echo htmlspecialchars($row['email']); ?></td>
                     <td><?php echo htmlspecialchars($row['birth_date']); ?></td>
-                    <td><?php echo htmlspecialchars($row['type']); ?></td>
+                    <td><?php echo htmlspecialchars($row['admin']); ?></td>
                 </tr>
             <?php endwhile; ?>
         </table>
