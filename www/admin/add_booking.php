@@ -9,26 +9,31 @@ if (!isset($_SESSION['user_id'])) {
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $title = $_POST['title'];
-    $author = $_POST['author'];
-    $description = $_POST['description'];
-    $isbn = $_POST['isbn'];
-    $genres = $_POST['genres'];
-    $publisher = $_POST['publisher'];
-    $quantity = $_POST['quantity'];
+    $email = $_POST['email'];
+    $ISBN = $_POST['ISBN'];
 
-    $sql = "SELECT * FROM Book WHERE isbn = '$isbn'";
+    $sql = "SELECT * FROM User WHERE email = '$email'";
     $result = $conn->query($sql);
-
-    if ($result->num_rows >= 1) {
-        header("Location: error.php?message=Book already exists!");
+    if ($result->num_rows < 1) {
+        header("Location: error.php?message=User does not exist!");
         exit();
     }
 
-    $sql = "INSERT INTO Book (title, author, description, isbn, genres, publisher, quantity) VALUES ('$title', '$author', '$description', '$isbn', '$genres', '$publisher', '$quantity')";
+    $sql = "SELECT * FROM Book WHERE ISBN = '$ISBN'";
+    $result_2 = $conn->query($sql);
+    if ($result_2->num_rows < 1) {
+        header("Location: error.php?message=Book does not exist!");
+        exit();
+    }
 
+    $user_id = $result->fetch_assoc()['id'];
+    $book_id = $result_2->fetch_assoc()['id'];
+    $booked_date = date("Y-m-d");
+    $expire_date = date("Y-m-d", strtotime("+1 month"));
+
+    $sql = "Insert INTO Booking (user_id, book_id, booked_date, expiration_date) VALUES ('$user_id', '$book_id', '$booked_date', '$expire_date')";
     if ($conn->query($sql) === TRUE) {
-        header("Location: success.php?message=Book added successfully!");
+        header("Location: success.php?message=User added successfully!");
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
@@ -43,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" type="text/css" href="../style.css"> -->
     <link rel="stylesheet" type="text/css" href="menu_style.css">
-    <title>Add Book</title>
+    <title>Add Booking</title>
     </head>
 <body>
     <div class="dropdown">
@@ -73,30 +78,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
-    <h2>Add a Book</h2>
+    <h2>Add a Booking</h2>
     <form method="post">
-        <label for="title">Title:</label>
-        <input type="text" name="title" required><br>
-
-        <label for="author">Author:</label>
-        <input type="text" name="author" required><br>
-
-        <label for="description">Description:</label>
-        <textarea name="description" rows="4" required></textarea><br>
-
-        <label for="isbn">ISBN:</label>
-        <input type="text" name="isbn" required><br>
-
-        <label for="genres">Genres:</label>
-        <input type="text" name="genres" required><br>
-
-        <label for="publisher">Publisher:</label>
-        <input type="text" name="publisher" required><br>
-
-        <label for="quantity">Quantity:</label>
-        <input type="number" name="quantity" min=1  required><br>
-
-        <input type="submit" value="Add Book">
+        <label for="email">Email</label>
+        <input type="text" name="email" required><br>
+        <label for="name">ISBN</label>
+        <input type="text" name="ISBN" required><br>
+        <input type="submit" value="Add">
     </form>
 </body>
 </html>

@@ -29,8 +29,8 @@ $userName = getUserName($_SESSION['user_id'])
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Home</title>
     <link rel="stylesheet" type="text/css" href="../style.css">
+    <title>Admin Home</title>
 </head>
 <body>
     <div class="form-container">
@@ -42,12 +42,12 @@ $userName = getUserName($_SESSION['user_id'])
         <button onclick="window.location.href='find_book.php'">Find</button>
 
         <h2>Users</h2>
-        <button onclick="window.location.href=''">Add</button>
+        <button onclick="window.location.href='add_user.php'">Add</button>
         <button onclick="window.location.href=''">Change</button>
         <button onclick="window.location.href='users.php'">Find</button>
 
         <h2>Booking</h2>
-        <button onclick="window.location.href=''">Add</button>
+        <button onclick="window.location.href='add_booking.php'">Add</button>
         <button onclick="window.location.href=''">Change</button>
         <button onclick="window.location.href=''">Find</button>
         <button onclick="window.location.href=''">Expirent</button>
