@@ -6,6 +6,8 @@
     <title>Error</title>
 </head>
 <body>
-    Error: <?php echo $_GET['message']; ?>
+    <?php include 'dropdowns.php'; ?>
+    <h2>Error</h2>
+    <?php echo $_GET['message']; ?>
 </body>
 </html>

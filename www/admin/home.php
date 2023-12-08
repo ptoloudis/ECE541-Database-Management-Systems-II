@@ -40,18 +40,20 @@ $userName = getUserName($_SESSION['user_id'])
         <button onclick="window.location.href='add_book.php'">Add</button>
         <button onclick="window.location.href='change_book.php'">Change</button>
         <button onclick="window.location.href='find_book.php'">Find</button>
+        <button onclick="window.location.href='remove_book.php'">Remove</button>        
 
         <h2>Users</h2>
         <button onclick="window.location.href='add_user.php'">Add</button>
-        <button onclick="window.location.href=''">Change</button>
-        <button onclick="window.location.href='users.php'">Find</button>
+        <button onclick="window.location.href='change_user.php'">Change</button>
+        <button onclick="window.location.href='find_user.php'">Find</button>
+        <button onclick="window.location.href='remove_user.php'">Remove</button>
 
         <h2>Booking</h2>
         <button onclick="window.location.href='add_booking.php'">Add</button>
-        <button onclick="window.location.href=''">Change</button>
-        <button onclick="window.location.href=''">Find</button>
-        <button onclick="window.location.href=''">Expirent</button>
-        <button onclick="window.location.href=''">Return</button>
+        <button onclick="window.location.href='change_booking.php'">Change</button>
+        <button onclick="window.location.href='find_booking.php'">Find</button>
+        <button onclick="window.location.href='expirent_booking.php'">Expirent</button>
+        <button onclick="window.location.href='return_booking.php'">Return</button>
     </div>
 </body>
 </html>

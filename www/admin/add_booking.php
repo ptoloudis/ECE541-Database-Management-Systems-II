@@ -30,9 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $book_id = $result_2->fetch_assoc()['id'];
     $booked_date = date("Y-m-d");
     $expire_date = date("Y-m-d", strtotime("+1 month"));
+    $return_date = date("0000-00-00");
 
-    $sql = "Insert INTO Booking (user_id, book_id, booked_date, expiration_date) VALUES ('$user_id', '$book_id', '$booked_date', '$expire_date')";
+    $sql = "INSERT INTO Booking (user_id, book_id, booked_date, expiration_date, date_returned) VALUES ('$user_id', '$book_id', '$booked_date', '$expire_date', '$return_date')";
     if ($conn->query($sql) === TRUE) {
+        echo "Error: " . $sql . "<br>" . $conn->error;
         header("Location: success.php?message=User added successfully!");
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
@@ -51,32 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Add Booking</title>
     </head>
 <body>
-    <div class="dropdown">
-        <button class="dropbtn">Books</button>
-        <div class="dropdown-content">
-            <a href="add_book.php">Add</a>
-            <a href="change_book.php">Change</a>
-            <a href="find_book.php">Find</a>
-        </div>        
-    </div>
-    <div class="dropdown">
-        <button class="dropbtn">Users</button>
-        <div class="dropdown-content">
-            <a href="add_user.php">Add</a>
-            <a href="change_user.php">Change</a>
-            <a href="find_user.php">Find</a>
-        </div>
-    </div>
-    <div class="dropdown">
-        <button class="dropbtn">Booking</button>
-        <div class="dropdown-content">
-            <a href="add_booking.php">Add</a>
-            <a href="change_booking.php">Change</a>
-            <a href="find_booking.php">Find</a>
-            <a href="expirent_booking.php">Expirent</a>
-            <a href="return_booking.php">Return</a>
-        </div>
-    </div>
+    <?php include 'dropdowns.php'; ?>
 
     <h2>Add a Booking</h2>
     <form method="post">

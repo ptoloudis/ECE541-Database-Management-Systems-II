@@ -6,6 +6,8 @@
     <title>Success</title>
 </head>
 <body>
-    Success: <?php echo $_GET['message']; ?>
+    <?php include 'dropdowns.php'; ?>
+    <h2>Success</h2>
+    <?php echo $_GET['message']; ?>
 </body>
 </html>
