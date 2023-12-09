@@ -27,17 +27,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $user_id = $result->fetch_assoc()['id'];
-    $book_id = $result_2->fetch_assoc()['id'];
+    $row = $result_2->fetch_assoc();
+    $book_id = $row['id'];  
+    $quantity = $row['quantity']-1;                  
+    if( $quantity < 0) {
+        header("Location: error.php?message=Book is not available!");
+        exit();
+    }
+
     $booked_date = date("Y-m-d");
     $expire_date = date("Y-m-d", strtotime("+1 month"));
     $return_date = date("0000-00-00");
 
     $sql = "INSERT INTO Booking (user_id, book_id, booked_date, expiration_date, date_returned) VALUES ('$user_id', '$book_id', '$booked_date', '$expire_date', '$return_date')";
     if ($conn->query($sql) === TRUE) {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-        header("Location: success.php?message=User added successfully!");
+        $sql = "UPDATE Book SET quantity = '$quantity' WHERE id = '$book_id'";
+        if ($conn->query($sql) === TRUE) {
+            header("Location: success.php?message=Book added successfully!");
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        header("Location: error.php?message=Book already booked!");
+        exit();
     }
 }
 
@@ -61,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="email" required><br>
         <label for="name">ISBN</label>
         <input type="text" name="ISBN" required><br>
-        <input type="submit" value="Add">
+        <input type="submit" value="Add Booking">
     </form>
 </body>
 </html>

@@ -1,6 +1,12 @@
 <!-- dropdowns.php -->
 <link rel="stylesheet" type="text/css" href="menu_style.css">
 <div class="dropdown">
+    <a href="index.php"> 
+        <button class="dropbtn">Home</button>        
+    </a>
+</div>
+    
+<div class="dropdown">
     <button class="dropbtn">Books</button>
     <div class="dropdown-content">
         <a href="add_book.php">Add</a>
@@ -22,9 +28,9 @@
     <button class="dropbtn">Booking</button>
     <div class="dropdown-content">
         <a href="add_booking.php">Add</a>
-        <a href="change_booking.php">Change</a>
+        <a href="make_return.php">Returned</a>
         <a href="find_booking.php">Find</a>
         <a href="expirent_booking.php">Expirent</a>
-        <a href="return_booking.php">Return</a>
+        <a href="return_booking.php">Not return</a>
     </div>
 </div>

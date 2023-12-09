@@ -62,8 +62,8 @@ CREATE TABLE `Booking` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `book_id` (`book_id`),
-  CONSTRAINT `Booking_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`),
-  CONSTRAINT `Booking_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `Book` (`id`)
+  CONSTRAINT `Booking_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `Booking_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `Book` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=501 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

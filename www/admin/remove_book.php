@@ -14,17 +14,16 @@ $result = array();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $select = $_POST['Select'];
-    $delete = $_POST['delete'];
+    $Remove = $_POST['Remove'];
 
     
         
-    if (empty($delete) || empty($select)) {
-        header("Location: error.php?message=delete field is empty!");
+    if (empty($Remove) || empty($select)) {
+        header("Location: error.php?message=Remove field is empty!");
         exit();
     }
     
-    // echo "Select: $select, Delete: $delete";
-    $sql = "DELETE FROM Book WHERE $select = '$delete'";
+    $sql = "DELETE FROM Book WHERE $select = '$Remove'";
 
     if ($conn->query($sql) === TRUE) {
         header("Location: success.php?message=Book remove successfully!");
@@ -48,16 +47,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include 'dropdowns.php'; ?>
     <h1>Remove Books</h1>
     <form method="post">
-        <label for="Select">Delete Book by:</label>
+        <label for="Select">Remove Book by:</label>
         <select name="Select" id="Select">
             <option value="isbn">ISBN</option>
             <option value="title">Title</option>
             <option value="author">Author</option>
             <option value="publisher">Publisher</option>
         </select>
-        <label for="delete">Delete:</label>
-        <input type="text" name="delete" id="delete">
-        <input type="submit" value="delete">
+        <label for="Remove">Remove:</label>
+        <input type="text" name="Remove" id="Remove">
+        <input type="submit" value="Remove">
     </form>
 </body>
 </html>

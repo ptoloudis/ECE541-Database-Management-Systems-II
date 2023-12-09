@@ -17,7 +17,7 @@ if (!isset($_SESSION['user_id'])) {
 
 // Redirect based on user type
 if ($_SESSION['admin'] == '1') {
-    header("Location: admin/home.php");
+    header("Location: admin/index.php");
     exit();
 } else {
     header("Location: user/books.php");

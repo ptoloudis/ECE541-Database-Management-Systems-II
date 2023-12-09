@@ -14,24 +14,24 @@ $result = array();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $select = $_POST['Select'];
-    $delete = $_POST['delete'];
+    $Remove = $_POST['Remove'];
 
     
         
     if ($select == 'Name & Surname') {
         
-        if (empty($delete)) {
-            header("Location: error.php?message=delete field is empty!");
+        if (empty($Remove)) {
+            header("Location: error.php?message=Remove field is empty!");
             exit();
         }
-        $delete = explode(' ', $delete);
-        $sql = "DELETE FROM User WHERE name = '$delete[0]' AND surname = '$delete[1]'";
+        $Remove = explode(' ', $Remove);
+        $sql = "DELETE FROM User WHERE name = '$Remove[0]' AND surname = '$Remove[1]'";
     } else {
-        if (empty($delete)) {
-            header("Location: error.php?message=delete field is empty!");
+        if (empty($Remove)) {
+            header("Location: error.php?message=Remove field is empty!");
             exit();
         }
-        $sql = "DELETE FROM User WHERE $select = '$delete'";
+        $sql = "DELETE FROM User WHERE $select = '$Remove'";
     }
 
     if ($conn->query($sql) === TRUE) {
@@ -63,9 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <option value="name">Name</option>
             <option value="surname">Surname</option>
         </select>
-        <label for="delete">Delete:</label>
-        <input type="text" name="delete" id="delete">
-        <input type="submit" value="delete">
+        <label for="Remove">Remove:</label>
+        <input type="text" name="Remove" id="Remove">
+        <input type="submit" value="Remove">
     </form>
 </body>
 </html>

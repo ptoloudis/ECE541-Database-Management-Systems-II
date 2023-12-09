@@ -50,10 +50,10 @@ $userName = getUserName($_SESSION['user_id'])
 
         <h2>Booking</h2>
         <button onclick="window.location.href='add_booking.php'">Add</button>
-        <button onclick="window.location.href='change_booking.php'">Change</button>
+        <button onclick="window.location.href='make_return.php'">Make return</button>
         <button onclick="window.location.href='find_booking.php'">Find</button>
         <button onclick="window.location.href='expirent_booking.php'">Expirent</button>
-        <button onclick="window.location.href='return_booking.php'">Return</button>
+        <button onclick="window.location.href='return_booking.php'">Not Return</button>
     </div>
 </body>
 </html>

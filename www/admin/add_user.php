@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="password" name="password" required><br>
         <label for="admin">Admin</label>
         <input type="checkbox" name="admin"><br>
-        <input type="submit" value="Add">
+        <input type="submit" value="Add User">
     </form>
 </body>
 </html>

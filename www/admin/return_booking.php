@@ -7,23 +7,24 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $sql = "
-        SELECT 
-            User.Name, 
-            User.surname,
-            Book.Title,
-            Booking.booked_date, 
-            Booking.date_returned, 
-            Booking.expiration_date
-        FROM Booking
-        INNER JOIN Book ON Booking.book_id = Book.id 
-        INNER JOIN User ON Booking.user_id = User.id
-        WHERE Booking.date_returned = '0000-00-00'
-    ";
-    $result = $conn->query($sql);
+$sql = "
+    SELECT 
+        User.Name, 
+        User.surname,
+        Book.Title,
+        Booking.booked_date, 
+        Booking.date_returned, 
+        Booking.expiration_date
+    FROM Booking
+    INNER JOIN Book ON Booking.book_id = Book.id 
+    INNER JOIN User ON Booking.user_id = User.id
+    WHERE Booking.date_returned = '0000-00-00'
+";
+$result = $conn->query($sql);
+if (!$result) {
+    echo "Error: " . $sql . "<br>" . $conn->error;
 }
+
 
 ?>
 
@@ -45,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <th>Surname</th>
             <th>Title</th>
             <th>Booked date</th>
-            <th>Returned date</th>
             <th>Expected date</th>
         </tr>
         <?php 
@@ -55,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     'surname' => '',
                     'Title' => '',
                     'booked_date' => '',
-                    'date_returned' => '',
                     'expiration_date' => ''
                 );
             } else
@@ -65,7 +64,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <td><?php echo $row['surname']; ?></td>
                 <td><?php echo $row['Title']; ?></td>
                 <td><?php echo $row['booked_date']; ?></td>
-                <td><?php echo $row['date_returned']; ?></td>
                 <td><?php echo $row['expiration_date']; ?></td>
             </tr>
         <?php endwhile; ?>
