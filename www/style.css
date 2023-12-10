@@ -1,33 +1,144 @@
 body {
     font-family: 'Arial', sans-serif;
+    background-color: #b4e2b4;
+    color: #333;
     margin: 0;
     padding: 0;
-    background-color: #b4e2b4; 
+    height: 100vh;
+}
+
+.centered-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    color: #333;
+    height: 100%;
 }
 
-.form-container {
+.login-container {
     background: white;
     padding: 40px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
 }
 
-input[type="email"], input[type="password"] {
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color: #333;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #333;
+    color: white;
+    border: 1px solid #333;
+}
+
+.pagination a:hover {
+    background-color: #555;
+    color: white;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* Optional: adds underline to indicate hoverable */
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 280px;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -140px; /* Use half of the width value */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.login-container {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+}
+
+.login-form .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.login-form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.login-form input[type="email"], .login-form input[type="password"] {
     width: 100%;
     padding: 10px;
-    margin: 10px 0;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
 }
 
-input[type="submit"] {
+.login-form input[type="submit"] {
     width: 100%;
     padding: 10px;
     border: none;
@@ -35,13 +146,99 @@ input[type="submit"] {
     background-color: #333;
     color: white;
     cursor: pointer;
+    margin-top: 10px;
 }
 
-input[type="submit"]:hover {
+.login-form input[type="submit"]:hover {
     background-color: #555;
 }
 
-.error {
-    color: red;
+.error-message {
+    color: #d9534f; /* Bootstrap's 'btn-danger' color */
+    padding: 10px;
     margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background-color: #f2dede; /* Bootstrap's 'alert-danger' background */
+    border-color: #ebccd1; /* Bootstrap's 'alert-danger' border */
+}
+
+
+h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    /* Existing table styles */
+}
+
+/* Style for action buttons/links in the table */
+.action-link {
+    color: #333;
+    background-color: #f2f2f2;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px;
+}
+
+.action-link:hover {
+    background-color: #ddd;
+}
+
+
+button {
+    color: #333;
+    background-color: #f2f2f2;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+.admin-container {
+    width: 80%;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-heading {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.admin-section {
+    margin-bottom: 30px;
+}
+
+.button-group button {
+    background-color: #4CAF50; /* Green background */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px; /* Space between buttons */
+    transition: background-color 0.3s;
+}
+
+.button-group button:hover {
+    background-color: #45a049; /* Darker green */
+}
+
+.button-group {
+    text-align: center; /* Center-align the buttons */
 }

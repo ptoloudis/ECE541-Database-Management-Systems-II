@@ -24,15 +24,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <div class="form-container">
-        <form method="post">
-            <div class="error">
-                <?php echo $error; ?>
-            </div>
-            Email: <input type="email" name="email"><br>
-            Password: <input type="password" name="password"><br>
-            <input type="submit" value="Login">
-        </form>
+<body>
+    <div class="centered-container">
+        <div class="login-container">
+            <h2>Login to Your Account</h2>
+            <form method="post" class="login-form">
+                <?php if ($error): ?>
+                    <div class="error-message">
+                        <?php echo $error; ?>
+                    </div>
+                <?php endif; ?>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+                <input type="submit" value="Login">
+            </form>
+        </div>
     </div>
 </body>
 </html>

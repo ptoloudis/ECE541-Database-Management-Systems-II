@@ -23,7 +23,6 @@ function getUserName($userId) {
 // Get the user's name
 $userName = getUserName($_SESSION['user_id'])
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,32 +32,39 @@ $userName = getUserName($_SESSION['user_id'])
     <title>Admin Home</title>
 </head>
 <body>
-    <div class="form-container">
-        <h1>Hello <?php echo $userName; ?></h1>
+    <div class="admin-container">
+        <h1 class="admin-heading">Hello, <?php echo $userName; ?></h1>
 
-        <h2>Books</h2>
-        <button onclick="window.location.href='add_book.php'">Add</button>
-        <button onclick="window.location.href='change_book.php'">Change</button>
-        <button onclick="window.location.href='find_book.php'">Find</button>
-        <button onclick="window.location.href='remove_book.php'">Remove</button>        
+        <div class="admin-section">
+            <h2>Books</h2>
+            <div class="button-group">
+                <button onclick="window.location.href='add_book.php'">Add</button>
+                <button onclick="window.location.href='change_book.php'">Change</button>
+                <button onclick="window.location.href='find_book.php'">Find</button>
+                <button onclick="window.location.href='remove_book.php'">Remove</button>
+            </div>
+        </div>
 
-        <h2>Users</h2>
-        <button onclick="window.location.href='add_user.php'">Add</button>
-        <button onclick="window.location.href='change_user.php'">Change</button>
-        <button onclick="window.location.href='find_user.php'">Find</button>
-        <button onclick="window.location.href='remove_user.php'">Remove</button>
+        <div class="admin-section">
+            <h2>Users</h2>
+            <div class="button-group">
+                <button onclick="window.location.href='add_user.php'">Add</button>
+                <button onclick="window.location.href='change_user.php'">Change</button>
+                <button onclick="window.location.href='find_user.php'">Find</button>
+                <button onclick="window.location.href='remove_user.php'">Remove</button>
+            </div>
+        </div>
 
-        <h2>Booking</h2>
-        <button onclick="window.location.href='add_booking.php'">Add</button>
-        <button onclick="window.location.href='make_return.php'">Make return</button>
-        <button onclick="window.location.href='find_booking.php'">Find</button>
-        <button onclick="window.location.href='expirent_booking.php'">Expirent</button>
-        <button onclick="window.location.href='return_booking.php'">Not Return</button>
+        <div class="admin-section">
+            <h2>Booking</h2>
+            <div class="button-group">
+                <button onclick="window.location.href='add_booking.php'">Add</button>
+                <button onclick="window.location.href='make_return.php'">Make return</button>
+                <button onclick="window.location.href='find_booking.php'">Find</button>
+                <button onclick="window.location.href='expirent_booking.php'">Expirent</button>
+                <button onclick="window.location.href='return_booking.php'">Not Return</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
-
-<?php
-// Close the database connection
-$conn->close();
-?>
