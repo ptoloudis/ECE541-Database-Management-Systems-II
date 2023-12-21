@@ -30,7 +30,7 @@
         <a href="add_booking.php">Add</a>
         <a href="make_return.php">Returned</a>
         <a href="find_booking.php">Find</a>
-        <a href="expirent_booking.php">Expirent</a>
+        <a href="expected_booking.php">Expirent</a>
         <a href="return_booking.php">Not return</a>
     </div>
 </div>

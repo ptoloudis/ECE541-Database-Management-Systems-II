@@ -1,46 +1,50 @@
 <?php
 session_start();
-include '../db.php';
-// include 'dropdowns.php';
-
+include '../db.php'; // Ensure this path is correct
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit();
 }
 
-// Create empty array
-$result = array(); 
+$message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $select = $_POST['Select'];
-    $Remove = $_POST['Remove'];
+    $removeType = $_POST['Select'];
+    $removeValue = $_POST['Remove'];
 
-    
-        
-    if ($select == 'Name & Surname') {
-        
-        if (empty($Remove)) {
-            header("Location: error.php?message=Remove field is empty!");
-            exit();
-        }
-        $Remove = explode(' ', $Remove);
-        $sql = "DELETE FROM User WHERE name = '$Remove[0]' AND surname = '$Remove[1]'";
-    } else {
-        if (empty($Remove)) {
-            header("Location: error.php?message=Remove field is empty!");
-            exit();
-        }
-        $sql = "DELETE FROM User WHERE $select = '$Remove'";
+    switch ($removeType) {
+        case 'email':
+            $sql = "DELETE FROM User WHERE email = ?";
+            break;
+        case 'Name & Surname':
+            list($name, $surname) = explode(' ', $removeValue, 2);
+            $sql = "DELETE FROM User WHERE name = ? AND surname = ?";
+            break;
+        case 'name':
+            $sql = "DELETE FROM User WHERE name = ?";
+            break;
+        case 'surname':
+            $sql = "DELETE FROM User WHERE surname = ?";
+            break;
+        default:
+            $sql = "DELETE FROM User WHERE email = ?";
+            break;
     }
 
-    if ($conn->query($sql) === TRUE) {
-        header("Location: success.php?message=User remove successfully!");
+    $stmt = $conn->prepare($sql);
+    if ($removeType == 'Name & Surname') {
+        $stmt->bind_param("ss", $name, $surname);
     } else {
-        header("Location: error.php?message=User not exist!");
+        $stmt->bind_param("s", $removeValue);
+    }
+
+    if ($stmt->execute()) {
+        $message = 'User removed successfully.';
+    } else {
+        $message = "Error: " . $stmt->error;
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -48,24 +52,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" type="text/css" href="../style.css"> -->
-    <link rel="stylesheet" type="text/css" href="menu_style.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
     <title>Remove User</title>
-    </head>
+</head>
 <body>
-    <?php include 'dropdowns.php'; ?>
-    <h1>Remove User</h1>
-    <form method="post">
-        <label for="Select">Select a User by:</label>
-        <select name="Select" id="Select">
-            <option value="email">Email</option>
-            <option value="Name & Surname">Name & Surname</option>
-            <option value="name">Name</option>
-            <option value="surname">Surname</option>
-        </select>
-        <label for="Remove">Remove:</label>
-        <input type="text" name="Remove" id="Remove">
-        <input type="submit" value="Remove">
-    </form>
+    <div class="container">
+        <div class="top-right">
+            <a href="index.php" class="btn btn-back">Back</a>
+        </div>
+
+        <h2>Remove User</h2>
+        <form method="post" class="login-container">
+            <div class="form-group">
+                <label for="Select">Select a User by:</label>
+                <select name="Select" id="Select" class="form-control">
+                    <option value="email">Email</option>
+                    <option value="Name & Surname">Name & Surname</option>
+                    <option value="name">Name</option>
+                    <option value="surname">Surname</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Remove">Remove:</label>
+                <input type="text" name="Remove" id="Remove" class="form-control">
+            </div>
+
+            <input type="submit" value="Remove" class="btn">
+        </form>
+
+        <?php if ($message): ?>
+            <p><?php echo $message; ?></p>
+        <?php endif; ?>
+    </div>
 </body>
 </html>

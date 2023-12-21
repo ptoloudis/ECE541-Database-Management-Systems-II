@@ -33,6 +33,7 @@ $userName = getUserName($_SESSION['user_id'])
 </head>
 <body>
     <div class="admin-container">
+        <a href="../logout.php" class="logout-button">Logout</a>
         <h1 class="admin-heading">Hello, <?php echo $userName; ?></h1>
 
         <div class="admin-section">
@@ -59,10 +60,10 @@ $userName = getUserName($_SESSION['user_id'])
             <h2>Booking</h2>
             <div class="button-group">
                 <button onclick="window.location.href='add_booking.php'">Add</button>
-                <button onclick="window.location.href='make_return.php'">Make return</button>
+                <button onclick="window.location.href='make_return.php'">Return</button>
                 <button onclick="window.location.href='find_booking.php'">Find</button>
-                <button onclick="window.location.href='expirent_booking.php'">Expirent</button>
-                <button onclick="window.location.href='return_booking.php'">Not Return</button>
+                <button onclick="window.location.href='expected_booking.php'">Expired</button>
+                <button onclick="window.location.href='return_booking.php'">Pending Returns</button>
             </div>
         </div>
     </div>

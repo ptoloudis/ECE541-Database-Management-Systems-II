@@ -14,8 +14,8 @@ if (!isset($_GET['book_id'])) {
     exit();
 }
 
-$bookId = $_GET['book_id'];
-$userId = $_SESSION['user_id']; // Ensure this is set during login
+$bookId = $_GET['book_id']; // Get the book ID from the URL
+$userId = $_SESSION['user_id']; // Get the user ID from the session
 
 // Check if the user is already renting the book
 $sqlCheck = "SELECT * FROM Booking WHERE user_id = $userId AND book_id = $bookId AND date_returned IS NULL";
@@ -56,7 +56,6 @@ if ($conn->query($sqlUpdateQuantity) === TRUE) {
 } else {
     echo json_encode(["status" => "error", "message" => "Error updating book quantity"]);
 }
-
 
 $conn->close();
 ?>

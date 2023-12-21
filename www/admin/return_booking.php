@@ -7,6 +7,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+$result = null; // Initialize $result as null
+
 $sql = "
     SELECT 
         User.Name, 
@@ -20,12 +22,13 @@ $sql = "
     INNER JOIN User ON Booking.user_id = User.id
     WHERE Booking.date_returned = '0000-00-00'
 ";
+
 $result = $conn->query($sql);
-if (!$result) {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+
+if ($result === FALSE) {
+    echo "Error: " . $conn->error;
+    $result = null; 
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -33,40 +36,42 @@ if (!$result) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" type="text/css" href="../style.css"> -->
-    <link rel="stylesheet" type="text/css" href="menu_style.css">
-    <title>Return Books</title>
-    </head>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <title>Pending Returns</title>
+</head>
 <body>
-    <?php include 'dropdowns.php'; ?>
-    <h1>Return Books</h1>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Title</th>
-            <th>Booked date</th>
-            <th>Expected date</th>
-        </tr>
-        <?php 
-            if (empty($result)) {
-                $row = array(
-                    'name' => '',
-                    'surname' => '',
-                    'Title' => '',
-                    'booked_date' => '',
-                    'expiration_date' => ''
-                );
-            } else
-                while ($row = $result->fetch_assoc()): ?>
-            <tr>
-                <td><?php echo $row['Name']; ?></td>
-                <td><?php echo $row['surname']; ?></td>
-                <td><?php echo $row['Title']; ?></td>
-                <td><?php echo $row['booked_date']; ?></td>
-                <td><?php echo $row['expiration_date']; ?></td>
-            </tr>
-        <?php endwhile; ?>
-    </table>
+    <div class="container">
+        <div class="top-right">
+            <a href="index.php" class="btn btn-back">Back</a>
+        </div>
+
+        <h2>Pending Returns</h2>
+        <div class="login-container">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Title</th>
+                    <th>Booked Date</th>
+                    <th>Expected Date</th>
+                </tr>
+                <?php 
+                    if ($result && $result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['Name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['surname']); ?></td>
+                                <td><?php echo htmlspecialchars($row['Title']); ?></td>
+                                <td><?php echo htmlspecialchars($row['booked_date']); ?></td>
+                                <td><?php echo htmlspecialchars($row['expiration_date']); ?></td>
+                            </tr>
+                        <?php endwhile;
+                    } else {
+                        echo '<tr><td colspan="5">No books to return.</td></tr>';
+                    }
+                ?>
+            </table>
+        </div>
+    </div>
 </body>
 </html>

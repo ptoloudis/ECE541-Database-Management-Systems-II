@@ -1,61 +1,64 @@
 <?php
 session_start();
-include '../db.php';
+include '../db.php'; // Ensure this path is correct
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit();
 }
 
-// Create empty array
-$result = array(); 
+$message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $isbn = $_POST['isbn'];
 
-    $sql = "Select id FROM User WHERE email = '$email'";
-    $result = $conn->query($sql);
-    if ($result === false) {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
+    // Check if the user exists
+    $stmt = $conn->prepare("SELECT id FROM User WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $userResult = $stmt->get_result();
 
-    if ($result->num_rows < 1) {
-        header("Location: error.php?message=Booking not exist!");
-        exit();
-    }
-    
-    $row = $result->fetch_assoc();
-    $user_id = $row['id'];
+    if ($userResult->num_rows == 0) {
+        $message = 'No user found with the provided email.';
+    } else {
+        $user = $userResult->fetch_assoc();
+        $userId = $user['id'];
 
-    $sql = "Select id, quantity FROM Book WHERE isbn = '$isbn'";
-    $result = $conn->query($sql);
-    if ($result === false) {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-    
-    if ($result->num_rows < 1) {
-        header("Location: error.php?message=Booking not exist!");
-        exit();
-    }
+        // Check if the book exists
+        $stmt = $conn->prepare("SELECT id FROM Book WHERE isbn = ?");
+        $stmt->bind_param("s", $isbn);
+        $stmt->execute();
+        $bookResult = $stmt->get_result();
 
-    $row = $result->fetch_assoc();
-    $book_id = $row['id'];
-    $quantity =  $row['quantity'] + 1;
+        if ($bookResult->num_rows == 0) {
+            $message = 'No book found with the provided ISBN.';
+        } else {
+            $book = $bookResult->fetch_assoc();
+            $bookId = $book['id'];
 
-    $sql = "UPDATE Booking SET date_returned = NOW() WHERE user_id = '$user_id' AND book_id = '$book_id'";
-    $result = $conn->query($sql);
-    if ($result === false) {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+            // Check if there is an active booking for this user and book
+            $stmt = $conn->prepare("SELECT * FROM Booking WHERE user_id = ? AND book_id = ? AND date_returned IS NULL");
+            $stmt->bind_param("ii", $userId, $bookId);
+            $stmt->execute();
+            $bookingResult = $stmt->get_result();
+
+            if ($bookingResult->num_rows == 0) {
+                $message = 'No active booking found for this user and book.';
+            } else {
+                // Update the booking to mark the book as returned
+                $stmt = $conn->prepare("UPDATE Booking SET date_returned = NOW() WHERE user_id = ? AND book_id = ? AND date_returned IS NULL");
+                $stmt->bind_param("ii", $userId, $bookId);
+
+                if ($stmt->execute()) {
+                    $message = 'Book returned successfully.';
+                } else {
+                    $message = "Error: " . $stmt->error;
+                }
+            }
+        }
     }
-
-    $sql = "UPDATE Book SET quantity = '$quantity' WHERE id = '$book_id'";
-    if ($result) {
-        header("Location: success.php?message=Book returned successfully!");
-        exit();
-    }    
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -63,18 +66,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="menu_style.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
     <title>Return Book</title>
-    </head>
+</head>
 <body>
-    <?php include 'dropdowns.php'; ?>
-    <h1>Return Book</h1>
-    <form method="post">
-        <label> Email: </label>
-        <input type="text" name="email" placeholder="Enter email" require>
-        <label> ISBN: </label>
-        <input type="text" name="isbn" placeholder="Enter ISBN" require>
-        <input type="submit" value="Return">        
-    </form>
+    <div class="container">
+        <div class="top-right">
+            <a href="index.php" class="btn btn-back">Back</a>
+        </div>
+
+        <h2>Return Book</h2>
+        <form method="post" class="login-container">
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="text" name="email" placeholder="Enter email" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>ISBN:</label>
+                <input type="text" name="isbn" placeholder="Enter ISBN" required class="form-control">
+            </div>
+
+            <input type="submit" value="Return" class="btn">
+        </form>
+
+        <?php if ($message): ?>
+            <p><?php echo $message; ?></p>
+        <?php endif; ?>
+    </div>
 </body>
 </html>

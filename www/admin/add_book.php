@@ -1,13 +1,14 @@
 <?php
 session_start();
-include '../db.php';
-include 'dropdowns.php';
+include '../db.php'; // Ensure this path is correct
+// include 'dropdowns.php'; // Ensure this path is correct
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit();
 }
 
+$message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
@@ -18,23 +19,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $publisher = $_POST['publisher'];
     $quantity = $_POST['quantity'];
 
-    $sql = "SELECT * FROM Book WHERE isbn = '$isbn'";
-    $result = $conn->query($sql);
+    // Prepared statement to prevent SQL Injection
+    $stmt = $conn->prepare("SELECT * FROM Book WHERE isbn = ?");
+    $stmt->bind_param("s", $isbn);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows >= 1) {
-        header("Location: error.php?message=Book already exists!");
-        exit();
-    }
-
-    $sql = "INSERT INTO Book (title, author, description, isbn, genres, publisher, quantity) VALUES ('$title', '$author', '$description', '$isbn', '$genres', '$publisher', '$quantity')";
-
-    if ($conn->query($sql) === TRUE) {
-        header("Location: success.php?message=Book added successfully!");
+        $message = 'Book already exists!';
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        $stmt = $conn->prepare("INSERT INTO Book (title, author, description, isbn, genres, publisher, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssi", $title, $author, $description, $isbn, $genres, $publisher, $quantity);
+
+        if ($stmt->execute()) {
+            $message = 'Book added successfully!';
+        } else {
+            $message = "Error: " . $stmt->error;
+        }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -42,35 +45,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" type="text/css" href="../style.css"> -->
-    <link rel="stylesheet" type="text/css" href="menu_style.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
     <title>Add Book</title>
-    </head>
+</head>
 <body>
-    <h1>Add a Book</h1>
-    <form method="post">
-        <label for="title">Title:</label>
-        <input type="text" name="title" required><br>
+    <div class="container">
+        <div class="top-left">
+            <a href="index.php" class="btn btn-back">Back</a>
+        </div>
 
-        <label for="author">Author:</label>
-        <input type="text" name="author" required><br>
+        <?php if ($message): ?>
+            <p class="message"><?php echo $message; ?></p>
+        <?php endif; ?>
 
-        <label for="description">Description:</label>
-        <textarea name="description" rows="4" required></textarea><br>
+        <h2>Add a Book</h2>
+        <form method="post" class="login-container">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
 
-        <label for="isbn">ISBN:</label>
-        <input type="text" name="isbn" required><br>
+            <div class="form-group">
+                <label for="author">Author:</label>
+                <input type="text" name="author" class="form-control" required>
+            </div>
 
-        <label for="genres">Genres:</label>
-        <input type="text" name="genres" required><br>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea name="description" class="form-control" rows="4" required></textarea>
+            </div>
 
-        <label for="publisher">Publisher:</label>
-        <input type="text" name="publisher" required><br>
+            <div class="form-group">
+                <label for="isbn">ISBN:</label>
+                <input type="text" name="isbn" class="form-control" required>
+            </div>
 
-        <label for="quantity">Quantity:</label>
-        <input type="number" name="quantity" min=1  required><br>
+            <div class="form-group">
+                <label for="genres">Genres:</label>
+                <input type="text" name="genres" class="form-control" required>
+            </div>
 
-        <input type="submit" value="Add Book">
-    </form>
+            <div class="form-group">
+                <label for="publisher">Publisher:</label>
+                <input type="text" name="publisher" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" class="form-control" min="1" required>
+            </div>
+
+            <input type="submit" value="Add Book" class="btn">
+        </form>
+    </div>
 </body>
 </html>

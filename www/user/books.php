@@ -70,6 +70,10 @@ function generatePagination($currentPage, $totalPages, $pageType) {
 
 echo "<div class='container'>"; 
 
+echo "<div class='logout-container'>";
+echo "<a href='../logout.php' class='logout-button'>Logout</a>";
+echo "</div>";
+
 echo "<h2>Your Rented Books</h2>";
 if ($resultRented->num_rows > 0) {
     echo "<table><tr><th>Title</th><th>Author</th><th>Rented On</th><th>Due By</th></tr>";
