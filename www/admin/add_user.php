@@ -26,9 +26,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = 'A user with this email already exists!';
     } else {
         // Insert the new user
-        //$hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Hashing the password
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT); // Hashing the password
         $stmt = $conn->prepare("INSERT INTO User (name, surname, email, password, admin) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssi", $name, $surname, $email, $password, $admin);
+        $stmt->bind_param("ssssi", $name, $surname, $email, $hashedPassword,$admin);
 
         if ($stmt->execute()) {
             $message = 'User added successfully!';

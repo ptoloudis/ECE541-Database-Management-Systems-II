@@ -9,8 +9,7 @@ function login($email, $password, $conn) {
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
-
-            if ($password == $user['password']) {
+            if (password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['admin'] = $user['admin']; 
                 return true;
