@@ -1,7 +1,6 @@
 <?php
 session_start();
 include '../db.php'; // Ensure this path is correct
-// include 'dropdowns.php'; // Ensure this path is correct
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");

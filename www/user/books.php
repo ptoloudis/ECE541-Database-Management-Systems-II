@@ -7,7 +7,7 @@ if ($_SESSION['admin'] != '0' && $_SESSION['admin'] != '1') {
 
 require_once '../db.php';
 
-$userId = $_SESSION['user_id']; // Ensure this is set during login
+$userId = $_SESSION['user_id'];
 
 // Pagination settings for rented books
 $rentedBooksPerPage = 5;
@@ -69,7 +69,6 @@ function generatePagination($currentPage, $totalPages, $pageType) {
 }
 
 echo "<div class='container'>"; 
-
 echo "<div class='logout-container'>";
 echo "<a href='../logout.php' class='logout-button'>Logout</a>";
 echo "</div>";
