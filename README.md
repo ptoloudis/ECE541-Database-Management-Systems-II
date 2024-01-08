@@ -31,3 +31,5 @@ The ECE541 Library Project is a PHP, CSS, MySQL, and Docker-based library manage
 - Access the application at `http://localhost:8000`.
 - Admins can log in to manage the library.
 - Users can browse and rent books.
+- Admin credencial Email: admin@admin.com Password: admin
+- Test User credencial Email: test@test.com Password: test
